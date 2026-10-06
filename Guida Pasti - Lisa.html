@@ -1,0 +1,125 @@
+<!DOCTYPE html>
+<html lang="it">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Guida Pasti - Lisa</title>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:wght@600;800&display=swap" rel="stylesheet">
+<style>
+:root{--bg:#eef1e8;--card:#fff;--ink:#1f2a1c;--muted:#5d6a55;--line:#d5dccb;--main:#3f4a2b;--on:#fff;--oil:#a9780f;--port:#b3372a;--carb:#2f7a3d;--note:#e1e8d3;
+box-sizing:border-box;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}
+@media (prefers-color-scheme:dark){:root:not([data-theme="light"]){--bg:#171c14;--card:#222a1e;--ink:#eef1e8;--muted:#a3b098;--line:#38442f;--main:#9fb86a;--on:#171c14;--oil:#e0b44a;--port:#ff8a78;--carb:#7fd18c;--note:#2b3524}}
+:root[data-theme="dark"]{--bg:#171c14;--card:#222a1e;--ink:#eef1e8;--muted:#a3b098;--line:#38442f;--main:#9fb86a;--on:#171c14;--oil:#e0b44a;--port:#ff8a78;--carb:#7fd18c;--note:#2b3524}
+*{box-sizing:border-box}
+body{margin:0;background:var(--bg);color:var(--ink);font:17px/1.5 system-ui,-apple-system,"Segoe UI",Arial,sans-serif}
+.wrap{max-width:760px;margin:0 auto;padding:16px}
+h1{font:800 clamp(1.7rem,6vw,2.4rem)/1.1 Fraunces,Georgia,serif;margin:8px 0 16px;color:var(--main)}
+h2{font:600 1.3rem/1.2 Fraunces,Georgia,serif;margin:28px 0 10px}
+.note-box{background:var(--note);border-left:6px solid var(--main);padding:12px 16px;border-radius:6px}
+.note-box ul{margin:8px 0 0;padding-left:20px}
+.portion{font-weight:700;color:var(--port)}.carb{color:var(--carb)}.oil{color:var(--oil);font-weight:700}
+.seg{display:grid;grid-template-columns:1fr 1fr;gap:6px;background:var(--line);padding:5px;border-radius:14px;margin-top:20px}
+.seg button{font:inherit;font-weight:700;font-size:1.15rem;padding:14px;border:0;border-radius:10px;background:transparent;color:var(--ink);cursor:pointer}
+.seg button[aria-pressed=true]{background:var(--main);color:var(--on)}
+button:focus-visible{outline:3px solid var(--oil);outline-offset:2px}
+.cats{display:grid;grid-template-columns:1fr 1fr;gap:8px}
+@media(max-width:480px){.cats{grid-template-columns:1fr}}
+.cat{font:inherit;text-align:left;padding:12px 14px;border:2px solid var(--line);border-radius:10px;background:var(--card);color:var(--ink);cursor:pointer;min-height:64px}
+.cat small{display:block;color:var(--muted);font-size:.8rem;line-height:1.3}
+.cat b{font-weight:700}
+.cat[aria-pressed=true]{border-color:var(--main);background:var(--note)}
+.detail{background:var(--card);border:2px solid var(--main);border-radius:12px;padding:6px 16px 16px;margin-top:16px}
+.detail .lbl{font-weight:700;color:var(--muted);font-size:.85rem;margin:14px 0 2px}
+.detail .val{font-size:1.15rem}
+.detail .val.portion{font-size:1.4rem}
+.sum{display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-top:16px}
+.sum div{background:var(--card);border:1px solid var(--line);border-radius:10px;padding:10px 12px}
+.sum span{display:block;color:var(--muted);font-size:.8rem;font-weight:700}
+.empty{color:var(--muted);margin-top:16px}
+.tw{overflow-x:auto}
+table{width:100%;min-width:640px;border-collapse:collapse;background:var(--card)}
+th,td{padding:12px 15px;text-align:left;border-bottom:1px solid var(--line);vertical-align:top}
+th{background:var(--main);color:var(--on);font-size:.85em;letter-spacing:.5px;text-transform:uppercase}
+.protein-cat{font-weight:700;background:var(--note);width:20%}
+.protein-cat small,td small{font-weight:400}
+</style>
+</head>
+<body>
+<div class="wrap">
+<h1>Guida Preparazione Pasti per Lisa</h1>
+
+<div class="note-box">
+<strong>Regole Generali Fisse per Ogni Pasto:</strong>
+<ul>
+<li><strong>Verdura:</strong> Sempre <span class="portion">200g</span> (peso a crudo o cotta a piacere, anche passata).</li>
+<li><strong>Frutta:</strong> Sempre <span class="portion">150g</span> (1 frutto medio o 2 piccoli) a fine pasto (se prevista).</li>
+<li><strong>Cotture:</strong> Piastra, forno, vapore o padella antiaderente (senza aggiungere altri grassi).</li>
+</ul>
+</div>
+
+<div class="seg" role="group" aria-label="Pasto">
+<button id="b-pranzo" aria-pressed="true">Pranzo</button>
+<button id="b-cena" aria-pressed="false">Cena</button>
+</div>
+
+<div class="sum">
+<div><span>Pranzo</span><b id="s-pranzo">da scegliere</b></div>
+<div><span>Cena</span><b id="s-cena">da scegliere</b></div>
+</div>
+
+<h2 id="t-scegli">Fonte Proteica</h2>
+<div class="cats" id="cats"></div>
+<div id="detail"></div>
+
+<h2>Tabella completa</h2>
+<div class="tw">
+<table>
+<thead><tr><th>Fonte Proteica</th><th>Quantità Proteina</th><th>Carboidrati da Abbinare</th><th>Contorno &amp; Frutta</th></tr></thead>
+<tbody id="tbody"></tbody>
+</table>
+</div>
+</div>
+
+<script>
+var D=[
+{n:"Carne Bianca",s:"(Pollo, Tacchino, Coniglio)",p:"200g",c:"<strong>Opzione A:</strong> Pane 50g<br><strong>Opzione B:</strong> Pasta / Riso / Farro / Orzo / Couscous 50g (o Pane 70g)",v:"Verdura 200g + Frutta 150g"},
+{n:"Carne Rossa",s:"(Vitello, Maiale, Manzo)",p:"150g",c:"Patate 200g <small>(oppure Pane 50g)</small>",v:"Verdura 200g + Frutta 150g"},
+{n:"Affettati Magri",s:"(Fesa di Tacchino/Pollo)",p:"100g",c:"Pane 50g",v:"Verdura 200g + Frutta 150g"},
+{n:"Pesce Magro",s:"(Merluzzo, Nasello, Sogliola, Polpo, Seppie)",p:"250g",c:"Pasta / Riso / Farro / Orzo / Couscous 50g <br><em>(oppure Pane 70g)</em>",v:"Verdura 200g + Frutta 150g"},
+{n:"Pesce Pregiato / Grasso",s:"(Tonno, Salmone, Pesce Spada fresco)",p:"150g",c:"Pane 50g",v:"Verdura 200g"},
+{n:"Pesce Affumicato",s:"(Salmone o Spada affumicato)",p:"100g",c:"Pane 50g",v:"Verdura 200g + Frutta 150g"},
+{n:"Uova",s:"",p:"2 Intere",c:"<strong>Opzione A:</strong> Riso / Pasta / Farro 50g (o Pane 70g)<br><strong>Opzione B:</strong> Pane 50g",v:"Verdura 200g + Frutta 150g"},
+{n:"Pasta di Legumi + Legumi",s:"(Lenticchie, Ceci, Piselli)",p:"• 60g Pasta di Legumi + 60g Piselli cotti<br>• 70g Pasta di Legumi + 60g Fagioli cotti",c:"Già presente nella pasta di legumi",v:"Verdura 200g + Frutta 150g"},
+{n:"Ceci + Uovo",s:"",p:"80g Ceci cotti + 1 Uovo intero",c:"Pasta / Riso / Farro 50g <br><em>(oppure Pane 70g)</em>",v:"Verdura 200g <small>(Frutta spostata a spuntino)</small>"},
+{n:"Proteine Vegetali",s:"(Burger Soia, Falafel, Tofu, Seitan)",p:"• Burger / Falafel: 90g<br>• Tofu / Seitan: 125g",c:"Pane 50g",v:"Verdura 200g + Frutta 150g"}
+];
+var meal="pranzo",pick={pranzo:null,cena:null};
+try{var sv=JSON.parse(localStorage.getItem("lisa-pasti")||"null");if(sv&&sv.pick)pick=sv.pick}catch(e){}
+function $(i){return document.getElementById(i)}
+function sub(x){return x.s?"<br><small>"+x.s+"</small>":""}
+function render(){
+ $("b-pranzo").setAttribute("aria-pressed",meal=="pranzo");
+ $("b-cena").setAttribute("aria-pressed",meal=="cena");
+ ["pranzo","cena"].forEach(function(m){$("s-"+m).textContent=pick[m]==null?"da scegliere":D[pick[m]].n});
+ var h="";
+ D.forEach(function(x,i){h+='<button class="cat" data-i="'+i+'" aria-pressed="'+(pick[meal]===i)+'"><b>'+x.n+'</b>'+(x.s?'<small>'+x.s+'</small>':'')+'</button>'});
+ $("cats").innerHTML=h;
+ var k=pick[meal],d="";
+ if(k==null){d='<p class="empty">Tocca una fonte proteica per vedere cosa preparare a '+meal+'.</p>'}
+ else{var x=D[k];
+  d='<div class="detail"><h2>'+x.n+sub(x)+'</h2>'+
+  '<div class="lbl">Quantità Proteina</div><div class="val portion">'+x.p+'</div>'+
+  '<div class="lbl">Carboidrati da Abbinare</div><div class="val carb">'+x.c+'</div>'+
+  '<div class="lbl">Contorno &amp; Frutta</div><div class="val">'+x.v+'</div></div>';}
+ $("detail").innerHTML=d;
+}
+var tb="";
+D.forEach(function(x){tb+='<tr><td class="protein-cat">'+x.n+sub(x)+'</td><td class="portion">'+x.p+'</td><td class="carb">'+x.c+'</td><td>'+x.v+'</td></tr>'});
+$("tbody").innerHTML=tb;
+$("b-pranzo").onclick=function(){meal="pranzo";render()};
+$("b-cena").onclick=function(){meal="cena";render()};
+$("cats").onclick=function(e){var b=e.target.closest(".cat");if(!b)return;var i=+b.dataset.i;pick[meal]=pick[meal]===i?null:i;try{localStorage.setItem("lisa-pasti",JSON.stringify({pick:pick}))}catch(er){}render()};
+render();
+</script>
+</body>
+</html>
